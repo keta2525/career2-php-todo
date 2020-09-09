@@ -1,6 +1,6 @@
 <?php
 
-require_once '.\Todo.php';
+require_once './todo.php';
 $todo = new Todo();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
