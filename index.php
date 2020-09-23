@@ -6,22 +6,11 @@ $todo = new Todo();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["method"]) && $_POST["method"] === "DELETE") {
         $todo->delete();
-    }
-    if (isset($_POST["method"]) && $_POST["method"] === "UPDATE") {
-        foreach (Todo::STATUS as $key => $label) 
-        {
-            $is_selected = $key === $todo["status"] ? "selected": "";
-        }
-    }else{
+    } elseif (isset($_POST["method"]) && $_POST["method"] === "UPDATE") {
+        $todo->update($_POST["todo_id"], $_POST['status']);
+    } else {
         $todo->post($_POST['title'], $_POST['due_date']);
     }
-}
-
-if ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    // ブラウザのリロード対策
-    $redirect_url = $_SERVER['HTTP_REFERER'];
-    header("Location: $redirect_url");
-    exit;
 }
 ?>
 <!DOCTYPE>
@@ -59,12 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] !== "GET") {
         <hr>
 
         <h2 class="text-muted py-3">やること一覧</h2>
-
         <form method="POST" action="<?php print($_SERVER['PHP_SELF']) ?>">
             <input type="hidden" name="method" value="DELETE">
-            <button class="btn btn-danger" type="submit">投稿を全削除する</button>
+            <button class="btn btn-danger" type="submit">TODOを全削除する</button>
         </form>
-
         <?php
         $todo_list = $todo->getList();
         ?>
